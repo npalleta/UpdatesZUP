@@ -136,7 +136,6 @@ class DateTimeClass(object):
 
 
 if __name__ == '__main__':
-
     results = DBClass(
         '/home/npml/.local/lib/python3.8/site-packages/rfswarm_manager/results/'
     )
