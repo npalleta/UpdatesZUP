@@ -90,21 +90,21 @@ class DBClass(object):
     def insert_tresults_values(self, rows):
         try:
             for values in rows:
-                ########## PRE COMMAND ##########
-                preCommand = "insert into ReferenceDate (ref_date) values (datetime('now', 'localtime'));"
-                print('Pre Command: ', preCommand)
-                self.db.cursor.execute(preCommand)
-                ########## PRE SELECT ##########
-                preSelect = 'select id_ref_date from ReferenceDate order by id_ref_date desc limit 1;'
-                print('Pre Select: ', preSelect)
-                refDateIdx = str(self.db.cursor.execute(preSelect).fetchone())
+                ########## PRE INSERT ##########
+                preInsert = "insert into ReferenceDate (ref_date) values (datetime('now', 'localtime'));"
+                print('Pre Insert: ', preInsert)
+                self.db.cursor.execute(preInsert)
+                ########## SELECT ##########
+                select = 'select id_ref_date from ReferenceDate order by id_ref_date desc limit 1;'
+                print('Select: ', select)
+                refDateIdx = str(self.db.cursor.execute(select).fetchone())
                 trnl = str.maketrans(dict.fromkeys("()"))
                 print(str(values)[1:-1])
-                ########## COMMAND ##########
-                command = 'insert into Results (script_index, robot, iteration, agent, sequence, result_name, result, elapsed_time, start_time, end_time, id_ref_date) values ({}, {});'.format(
+                ########## INSERT ##########
+                insert = 'insert into Results (script_index, robot, iteration, agent, sequence, result_name, result, elapsed_time, start_time, end_time, id_ref_date) values ({}, {});'.format(
                     str(values)[1:-1], refDateIdx.translate(trnl).replace(',', ''))
-                print('Command: ', command)
-                self.db.cursor.execute(command)
+                print('Insert: ', insert)
+                self.db.cursor.execute(insert)
                 ########## COMMIT ##########
                 self.db.commit_db()
                 print('Data successfully inserted.')
@@ -144,8 +144,10 @@ if __name__ == '__main__':
     print('Closing RFSwarm Result Database...')
     results.db.close_db
     print('Opening Backup Results Database...')
-    GenerateDBFile('/home/npml/Projetos/Python/SQLite/perf_project/db/backup')
-    results = DBClass('/home/npml/Projetos/Python/SQLite/perf_project/db')
+    GenerateDBFile(
+        '/home/npml/Projetos/Python/UpdatesZUP/SQLite/perf_project/db/backup')
+    results = DBClass(
+        '/home/npml/Projetos/Python/UpdatesZUP/SQLite/perf_project/db')
     results.execute_schema('sql/tables.sql')
     results.execute_schema('sql/indexes.sql')
     results.execute_all_schemas('sql/views')
