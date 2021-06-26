@@ -121,7 +121,7 @@ class GenerateDBFile(object):
             filePath, DateTimeClass().get_current_month_year()
         )
         if path.exists(dbFile):
-            print('File already exists!')
+            print('File already exists.')
         else:
             print('Generating db file...')
             file = open(dbFile, 'w+')
